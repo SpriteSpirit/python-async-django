@@ -38,18 +38,20 @@ def worker(worker_id: int) -> None:
     # Бесконечный цикл для обработки задач
     while True:
         task = fetch_task()
-        if task:
-            print(f"Worker {worker_id} взял задачу: {task.task_name}")
-            time.sleep(2)
 
-            with transaction.atomic():
-                task.status = "completed"
-                task.save()
-            print(f"Worker {worker_id} завершил задачу: {task.task_name}")
-        else:
+        if not task:
             print(f"Worker {worker_id}: Нет задач для обработки.")
             # Выход из цикла, если задач нет
             break
+
+        print(f"Worker {worker_id} взял задачу: {task.task_name}")
+        time.sleep(2)
+
+        task.status = "completed"
+        task.save(update_fields=("status",))
+        print(f"Worker {worker_id} завершил задачу: {task.task_name}")
+
+
 
 
 class Command(BaseCommand):
