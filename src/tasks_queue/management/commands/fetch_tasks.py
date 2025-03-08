@@ -52,8 +52,6 @@ def worker(worker_id: int) -> None:
         print(f"Worker {worker_id} завершил задачу: {task.task_name}")
 
 
-
-
 class Command(BaseCommand):
     help = "Запускает воркеров для обработки задач."
 
